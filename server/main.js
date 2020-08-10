@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express()
 const scrapper = require("./armory-scrapper");
-const {compositeImages, writeAchievement, writeStatus} = require("./composite-image");
+const {compositeImages, writeAchievement, writeStatus, writeSkill, levelUp} = require("./composite-image");
 
 
 const port = 8080
@@ -27,7 +27,7 @@ function setCurrentImage(image) {
 
 app.listen(port, () => {
     console.time("dbsave");
-    if(baseImage === undefined) scrapper('Novidaddy', 'magtheridon', imageSetCallback);
+    if(baseImage === undefined) scrapper('Notrashy', 'outland', imageSetCallback);
 })
 
 app.get('/achievement', async (req, res) => {
@@ -52,6 +52,37 @@ app.get('/status', async (req, res) => {
             console.log(err)
             res.sendStatus(300);
         } else {
+            result.writeAsync('./test/final.png')
+            setCurrentImage(result);
+            res.send(200);
+        }
+    });
+})
+
+app.get('/skill', async (req, res) => {
+    let image = baseImage;
+    if(currentImage !== undefined) image = currentImage;
+    writeSkill(image, "Your responsabilities increased!", function (err, result){
+        if(err) {
+            console.log(err)
+            res.sendStatus(300);
+        } else {
+            result.writeAsync('./test/final.png')
+            setCurrentImage(result);
+            res.send(200);
+        }
+    });
+})
+
+app.get('/levelup', async (req, res) => {
+    let image = baseImage;
+    if(currentImage !== undefined) image = currentImage;
+    levelUp(image, "Your responsabilities increased!", function (err, result){
+        if(err) {
+            console.log(err)
+            res.sendStatus(300);
+        } else {
+            result.writeAsync('./test/final.png')
             setCurrentImage(result);
             res.send(200);
         }

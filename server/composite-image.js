@@ -26,9 +26,24 @@ module.exports = {
         status.composite(border, 0, 0);
         Jimp.loadFont('./static/fonts/font-60-yellow.fnt').then(yellowFont => {
             Jimp.loadFont('./static/fonts/font-36.fnt').then(font => {
-                callback(null, image.composite(status,650, 650)
-                    .print(font, 780, 660, text)
-                    .print(yellowFont, 780, 710, "New Bills & Taxes Available"));
+                callback(null, image.composite(status,650, 550)
+                    .print(font, 780, 560, text)
+                    .print(yellowFont, 780, 610, "New Bills & Taxes Available"));
+            });
+        });
+    },
+
+    writeSkill: async function writeSkills(image, text, callback) {
+        const mask = await Jimp.read('./static/images/status/border-mask.png');
+        const border = await Jimp.read('./static/images/status/border-transparent.png');
+        const status = await (await Jimp.read('./static/images/icons/Abilities/02_2.png')).scale(2);
+        status.mask(mask, 0, 0);
+        status.composite(border, 0, 0);
+        Jimp.loadFont('./static/fonts/font-60-yellow.fnt').then(yellowFont => {
+            Jimp.loadFont('./static/fonts/font-36.fnt').then(font => {
+                callback(null, image.composite(status,650, 750)
+                    .print(font, 780, 760, text)
+                    .print(yellowFont, 780, 810, "Midlife Crisis"));
             });
         });
     },
@@ -48,7 +63,18 @@ module.exports = {
             });
     
         })
-    }
+    },
+    levelUp: async function levelUp(image, text, callback) {
+        const levelbase = await Jimp.read('./static/images/level-up/base.png');
+        Jimp.loadFont('./static/fonts/font-84-white.fnt').then(white84Font => {
+            Jimp.loadFont('./static/fonts/font-106-yellow.fnt').then(yellowFont => {
+                levelbase.print(yellowFont, 0, 0, {text: "Level 84", alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER, alignmentY: Jimp.VERTICAL_ALIGN_BOTTOM}, 942, 249)
+                .print(white84Font, 0, 25, {text: "Testing text test ting", alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER, alignmentY: Jimp.VERTICAL_ALIGN_TOP}, 942, 249);
+                callback(null, image.composite(levelbase,650, 250));
+            });
+                    
+        });
+    },
 }
 
 

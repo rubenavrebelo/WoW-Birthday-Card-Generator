@@ -24,7 +24,6 @@ module.exports = scrapper = function scrapArmory(character, realm, callback) {
     const backgroundImageCleaned = backgroundImageUrl.match(/url\("(.*)"/)[1] 
     const avatarUrlCleaned = avatarUrl.match(/url\("(.*)"/)[1] 
     await browser.close();
-    console.timeEnd("dbsave")
     callback([backgroundImageCleaned, avatarUrlCleaned])
   })();
 }
