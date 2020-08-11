@@ -12,8 +12,8 @@ module.exports = {
             const image = new Jimp(1600, 1200, function (err, image) {
                     image.composite(avatar,0, 0)
                     .composite(img, 1295, 0);
+                    callback(image);
                 });
-            callback(image);
         })
 
     })

@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const {compositeImages} = require("./composite-image");
 
 module.exports = scrapper = function scrapArmory(character, realm, callback) {
   (async () => {
@@ -24,7 +25,7 @@ module.exports = scrapper = function scrapArmory(character, realm, callback) {
     const backgroundImageCleaned = backgroundImageUrl.match(/url\("(.*)"/)[1] 
     const avatarUrlCleaned = avatarUrl.match(/url\("(.*)"/)[1] 
     await browser.close();
-    callback([backgroundImageCleaned, avatarUrlCleaned])
+    compositeImages(backgroundImageCleaned, avatarUrlCleaned, callback);
   })();
 }
 
