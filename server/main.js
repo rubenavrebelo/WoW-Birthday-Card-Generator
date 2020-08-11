@@ -4,35 +4,58 @@ const scrapper = require("./armory-scrapper");
 const {writeAchievement, writeStatus, writeSkill, levelUp} = require("./composite-image");
 var crypto = require('crypto');
 var fs = require('fs');
-const findRemoveSync = require('find-remove')
-const cron = require('node-cron')
-
+const findRemoveSync = require('find-remove');
+const cron = require('node-cron');
+const Jimp = require('jimp');
 
 const port = 8080
-let baseImage;
-let currentImage;
 
+// Task Schedule for deleting folders every 24h
 cron.schedule('0 0 * * *', () => {
     console.log('Deleting old folders....');
     var result = findRemoveSync('/tmp', {age: {seconds: 86400}, dir: '*'})
 });
 
-function setBaseImage(image) {
-    baseImage = image;
-    image.writeAsync("tmp/base.jpg")
+function setBaseImage(image, hash) {
+    image.writeAsync(`tmp/${hash}/${hash}-base.jpg`)
     console.timeEnd("dbsave")
-}
-
-function setCurrentImage(image) {
-    currentImage = image;
-    console.log('here');
-    image.writeAsync(`test/final.png`);
 }
 
 app.listen(port, () => {
     console.log("Server started");
-    var result = findRemoveSync('/tmp', {age: {seconds: 86400}, dir: '*'})
 });
+
+app.get('/:realm/:character/base', async (req, res) => {
+    console.time("dbsave");
+    var hash = crypto.createHash('sha256').update(req.params.character+"-"+req.params.realm).digest('base64');
+    if (!fs.existsSync("tmp/"+hash)){
+        fs.mkdirSync("tmp/"+hash);
+    }
+    scrapper(req.params.character, req.params.realm, setBaseImage, hash);
+    res.sendStatus(200);
+})
+
+app.get('/:realm/:character/final', async (req, res) => {
+    var hash = crypto.createHash('sha256').update(req.params.character+"-"+req.params.realm).digest('base64');
+    if(fs.existsSync("tmp/"+hash) && fs.existsSync(`tmp/${hash}/${hash}-base.jpg`)){
+        let baseImage = await Jimp.read(`tmp/${hash}/${hash}-base.jpg`);
+        writeSkill(baseImage, "Unlock it", "TENHO UM NAMORADO LINDO", function(err, image){
+            writeStatus(image, "Your responsabilities increased!", "Shake it", function(err, imageSkills){
+                writeAchievement(imageSkills, "Choli not XCX", true, function(err, imageAchiev) {
+                    levelUp(imageAchiev, "Test", function(err, final){
+                        final.writeAsync(`tmp/${hash}/${hash}-final.jpg`);
+                        res.sendFile(__dirname + `/tmp/${hash}/${hash}-final.jpg`);
+                    });
+                })
+            })
+        });
+    } else {
+        res.sendStatus(404);
+    }
+})
+
+/* LEGACY CODE
+USED FOR INDIVIDUAL TESTING
 
 app.get('/achievement', async (req, res) => {
     let image = baseImage;
@@ -91,14 +114,12 @@ app.get('/levelup', async (req, res) => {
             res.send(200);
         }
     });
-})
+}) 
 
-app.get('/base/:realm/:character', async (req, res) => {
-    console.time("dbsave");
-    var hash = crypto.createHash('sha256').update(req.params.character+"-"+req.params.realm).digest('base64');
-    if (!fs.existsSync("tmp/"+hash)){
-        fs.mkdirSync("tmp/"+hash);
-    }
-    scrapper(req.params.character, req.params.realm, setBaseImage);
-    res.sendStatus(200);
-})
+function setCurrentImage(image) {
+    currentImage = image;
+    console.log('here');
+    image.writeAsync(`test/final.png`);
+}
+*/
+
