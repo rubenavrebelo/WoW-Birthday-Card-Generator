@@ -27,7 +27,8 @@ app.listen(port, () => {
 
 app.get('/:realm/:character/base', async (req, res) => {
     console.time("dbsave");
-    var hash = crypto.createHash('sha256').update(req.params.character+"-"+req.params.realm).digest('base64');
+    var hash = crypto.createHash('sha256').update(req.params.character.toLowerCase()+"-"+req.params.realm.toLowerCase()).digest('base64');
+    if(hash.includes('/')) hash = hash.replace('/', '$')
     if (!fs.existsSync("tmp/"+hash)){
         fs.mkdirSync("tmp/"+hash);
     }
@@ -36,13 +37,14 @@ app.get('/:realm/:character/base', async (req, res) => {
 })
 
 app.get('/:realm/:character/final', async (req, res) => {
-    var hash = crypto.createHash('sha256').update(req.params.character+"-"+req.params.realm).digest('base64');
+    var hash = crypto.createHash('sha256').update(req.params.character.toLowerCase()+"-"+req.params.realm.toLowerCase()).digest('base64');
+    if(hash.includes('/')) hash = hash.replace('/', '$')
     if(fs.existsSync("tmp/"+hash) && fs.existsSync(`tmp/${hash}/${hash}-base.jpg`)){
         let baseImage = await Jimp.read(`tmp/${hash}/${hash}-base.jpg`);
-        writeSkill(baseImage, "Unlock it", "TENHO UM NAMORADO LINDO", function(err, image){
-            writeStatus(image, "Your responsabilities increased!", "Shake it", function(err, imageSkills){
-                writeAchievement(imageSkills, "Choli not XCX", true, function(err, imageAchiev) {
-                    levelUp(imageAchiev, "Test", function(err, final){
+        writeSkill(baseImage, "New spell learned", "Toxic Spray", function(err, image){
+            writeStatus(image, "Your responsabilities increased!", "Aturar putas", function(err, imageSkills){
+                writeAchievement(imageSkills, "Administrator", true, function(err, imageAchiev) {
+                    levelUp(imageAchiev, "You've reached", "Level Admin", function(err, final){
                         final.writeAsync(`tmp/${hash}/${hash}-final.jpg`);
                         res.sendFile(__dirname + `/tmp/${hash}/${hash}-final.jpg`);
                     });

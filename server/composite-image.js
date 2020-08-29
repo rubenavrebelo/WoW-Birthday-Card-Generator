@@ -64,12 +64,12 @@ module.exports = {
     
         })
     },
-    levelUp: async function levelUp(image, text, callback) {
+    levelUp: async function levelUp(image, firstText, levelUp, callback) {
         const levelbase = await Jimp.read('./static/images/level-up/base.png');
         Jimp.loadFont('./static/fonts/font-84-white.fnt').then(white84Font => {
             Jimp.loadFont('./static/fonts/font-106-yellow.fnt').then(yellowFont => {
-                levelbase.print(yellowFont, 0, 0, {text: "Level 84", alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER, alignmentY: Jimp.VERTICAL_ALIGN_BOTTOM}, 942, 249)
-                .print(white84Font, 0, 25, {text: "Testing text test ting", alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER, alignmentY: Jimp.VERTICAL_ALIGN_TOP}, 942, 249);
+                levelbase.print(yellowFont, 0, 0, {text: levelUp, alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER, alignmentY: Jimp.VERTICAL_ALIGN_BOTTOM}, 942, 249)
+                .print(white84Font, 0, 25, {text: firstText, alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER, alignmentY: Jimp.VERTICAL_ALIGN_TOP}, 942, 249);
                 callback(null, image.composite(levelbase,650, 250));
             });
                     

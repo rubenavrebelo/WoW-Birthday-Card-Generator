@@ -1,4 +1,8 @@
 import * as React from 'react';
+import { Typography } from '@material-ui/core';
+import Image from './image';
+import AchievEditor from './achievement-editor';
+import StatusEditor from './status-editor';
 
 export default function BaseImage() {
 
@@ -6,7 +10,10 @@ export default function BaseImage() {
 
     })
 
-    return (<div>
-        <img src={'https://render-eu.worldofwarcraft.com/character/outland/215/168611799-main.jpg'} alt={'image'} style={{width: '75'}}/>
+    return (<div style={{overflowY:'auto'}}>
+        <Typography variant={'h3'}>Hi, Notrashy</Typography>
+        <Image/>
+        <AchievEditor/>
+        <StatusEditor/>
     </div>);
 }
