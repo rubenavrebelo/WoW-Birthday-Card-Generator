@@ -4,11 +4,11 @@ module.exports = {
     compositeImages: function compositeImage(bg, imgAvatar, callback, hash) {
     Jimp.read(bg, (err, img) => {
         if(err) throw err
-        img.scale(1.1875)
-        .crop(2370, 546, 305, 1200);
+        img.scale(1.15)
+        .crop(2200, 485, 305, 1200);
         Jimp.read(imgAvatar, (err, avatar) => {
-            avatar.scale(1.1875)
-            .crop(600, 0, 1295, 1200);
+            avatar.scale(1.4)
+            .crop(900, 450, 1295, 1200);
             const image = new Jimp(1600, 1200, function (err, image) {
                     image.composite(avatar,0, 0)
                     .composite(img, 1295, 0);

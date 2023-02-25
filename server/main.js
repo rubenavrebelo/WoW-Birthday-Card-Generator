@@ -18,7 +18,7 @@ cron.schedule('0 0 * * *', () => {
 
 function setBaseImage(image, hash) {
     image.writeAsync(`tmp/${hash}/${hash}-base.jpg`)
-    console.timeEnd("dbsave")
+    console.log(`Wrote image in: tmp/${hash}/${hash}-base.jpg`)
 }
 
 app.listen(port, () => {
@@ -26,7 +26,6 @@ app.listen(port, () => {
 });
 
 app.get('/:realm/:character/base', async (req, res) => {
-    console.time("dbsave");
     var hash = crypto.createHash('sha256').update(req.params.character.toLowerCase()+"-"+req.params.realm.toLowerCase()).digest('base64');
     if(hash.includes('/')) hash = hash.replace('/', '$')
     if (!fs.existsSync("tmp/"+hash)){
@@ -51,6 +50,7 @@ app.get('/:realm/:character/final', async (req, res) => {
                 })
             })
         });
+        res.sendStatus(200);
     } else {
         res.sendStatus(404);
     }
