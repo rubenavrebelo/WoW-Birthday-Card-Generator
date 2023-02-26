@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Typography, ButtonBase, Button, makeStyles } from '@material-ui/core';
+import { makeStyles, createStyles } from '@mui/styles';
 import notrashy from '../../static/notrashy-base.jpg'
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     status: {
         position: 'absolute', marginTop: '20.4%', left: '24%', height: '9%', width: '4.5%', backgroundColor: 'rgba(0, 0, 0, 0)',
         border: 'none',

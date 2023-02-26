@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { Typography, Paper, Tabs, Tab, Theme, withStyles, createStyles } from '@material-ui/core';
+import { Typography, Paper, Tabs, Tab, Theme } from '@mui/material';
 import Image from './image';
 import AchievEditor from './achievement-editor';
 import StatusEditor from './status-editor';
+import {  createStyles, withStyles } from '@mui/styles';
+
 
 const AntTabs = withStyles({
     root: {

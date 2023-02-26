@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography, Paper, Checkbox, TextField } from '@material-ui/core';
+import { Typography, Paper, Checkbox, TextField } from '@mui/material';
 
 export default function StatusEditor() {
 

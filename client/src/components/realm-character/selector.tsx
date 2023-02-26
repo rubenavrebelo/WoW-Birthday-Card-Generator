@@ -1,13 +1,14 @@
 import * as React from 'react';
-import {makeStyles, InputBase, Paper, Divider, Button} from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import PersonIcon from '@material-ui/icons/Person';
-import EmojiNatureIcon from '@material-ui/icons/EmojiNature';
+import { InputBase, Paper, Divider, Button} from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import Autocomplete from '@mui/lab/Autocomplete';
+import PersonIcon from '@mui/icons-material/Person';
+import EmojiNatureIcon from '@mui/icons-material/EmojiNature';
 import EURealms from '../../types/eu-realm';
 import USRealms from '../../types/us-realm';
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
       padding: '5px 10px 5px 10px',
       display: 'flex',
@@ -53,7 +54,7 @@ export default function RealmCharSelector() {
             onChange={(event: any, newValue: string | null)  =>  setRealm(newValue)}
             renderInput={(params) =>  
                 <div ref={params.InputProps.ref}>
-                    <InputBase placeholder={'Realm'} {...params.inputProps} startAdornment={<EmojiNatureIcon style={{marginRight: 5, color: '#E0AC33'}}/>} />
+                    <InputBase placeholder={'Realm'} startAdornment={<EmojiNatureIcon style={{marginRight: 5, color: '#E0AC33'}}/>} />
                 </div>}
         />
         <Button disabled={charName === "" || realm === "" || realm === null}>Go</Button>

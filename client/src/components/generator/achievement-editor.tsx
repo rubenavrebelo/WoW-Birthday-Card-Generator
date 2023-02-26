@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Checkbox, Typography, TextField, Paper } from '@material-ui/core';
+import { Checkbox, Typography, TextField, Paper } from '@mui/material';
 
 export default function AchievEditor() {
 
