@@ -44,7 +44,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Image() {
+export interface ImageProps {
+  hash: string;
+}
+
+export const Image: React.FC<ImageProps> = ({ hash }) => {
   const classes = useStyles();
 
   React.useEffect(() => {});
@@ -57,10 +61,10 @@ export default function Image() {
         justifyContent: "center",
       }}
     >
-      <img src={notrashy} style={{ width: "88%" }} />
+      <img src={`http://localhost:8080/tmp/${hash}/${hash}-base.jpg`} style={{ width: "88%" }} />
       <button className={classes.status} />
       <button className={classes.skill} />
       <button className={classes.achiev} />
     </div>
   );
-}
+};
