@@ -14,28 +14,17 @@ module.exports = {
       });
     });
   },
-  writeStatus: async function writeStatus(
-    image,
-    unlock,
-    text,
-    shouldWrite,
-    callback
-  ) {
+  writeStatus: async function writeStatus(image, unlock, text, shouldWrite, callback) {
     if (shouldWrite) {
       const mask = await Jimp.read("./static/images/status/border-mask.png");
 
-      const status = await (
-        await Jimp.read("./static/images/icons/ICONS/classes/Ability_Parry.PNG")
-      ).scale(1.9);
+      const status = await (await Jimp.read("./public/icons/classes/Ability_Parry.PNG")).scale(1.9);
       status.mask(mask, 0, 0);
       Jimp.loadFont("./static/fonts/font-60-yellow.fnt").then((yellowFont) => {
         Jimp.loadFont("./static/fonts/font-36.fnt").then((font) => {
           callback(
             null,
-            image
-              .composite(status, 650, 550)
-              .print(font, 780, 560, unlock)
-              .print(yellowFont, 780, 610, text)
+            image.composite(status, 650, 550).print(font, 780, 560, unlock).print(yellowFont, 780, 610, text)
           );
         });
       });
@@ -44,29 +33,18 @@ module.exports = {
     }
   },
 
-  writeSkill: async function writeSkills(
-    image,
-    unlock,
-    skill,
-    shouldWrite,
-    callback
-  ) {
+  writeSkill: async function writeSkills(image, unlock, skill, shouldWrite, callback) {
     if (shouldWrite) {
       const mask = await Jimp.read("./static/images/status/border-mask.png");
       const status = await (
-        await Jimp.read(
-          "./static/images/icons/ICONS/classes/evoker/Ability_Evoker_ChargedBlast.PNG"
-        )
+        await Jimp.read("./public/icons/classes/evoker/Ability_Evoker_ChargedBlast.PNG")
       ).scale(1.9);
       status.mask(mask, 0, 0);
       Jimp.loadFont("./static/fonts/font-60-yellow.fnt").then((yellowFont) => {
         Jimp.loadFont("./static/fonts/font-36.fnt").then((font) => {
           callback(
             null,
-            image
-              .composite(status, 650, 750)
-              .print(font, 780, 760, unlock)
-              .print(yellowFont, 780, 810, skill)
+            image.composite(status, 650, 750).print(font, 780, 760, unlock).print(yellowFont, 780, 810, skill)
           );
         });
       });
@@ -74,40 +52,29 @@ module.exports = {
       callback(null, image);
     }
   },
-  writeAchievement: function achievementEdit(
-    image,
-    text,
-    hasFeats,
-    shouldWrite,
-    callback
-  ) {
+  writeAchievement: function achievementEdit(image, text, hasFeats, shouldWrite, callback) {
     if (shouldWrite) {
       Jimp.loadFont("./static/fonts/font-24-white.fnt").then((font) => {
         Jimp.read("./static/images/achievement/template.png", (err, img) => {
           Jimp.read("./static/images/achievement/cloth.png", (err, avatar) => {
-            Jimp.read(
-              "./static/images/achievement/feats-of-strength-2x.png",
-              (err, feats) => {
-                let achievement = img
-                  .composite(avatar.scale(1.63), 29, 38)
-                  .print(
-                    font,
-                    0,
-                    3,
-                    {
-                      text,
-                      alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
-                      alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE,
-                    },
-                    640,
-                    180
-                  );
-                if (hasFeats) {
-                  achievement = achievement.composite(feats, 505, 50);
-                }
-                callback(null, image.composite(achievement, 775, 900));
+            Jimp.read("./static/images/achievement/feats-of-strength-2x.png", (err, feats) => {
+              let achievement = img.composite(avatar.scale(1.63), 29, 38).print(
+                font,
+                0,
+                3,
+                {
+                  text,
+                  alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+                  alignmentY: Jimp.VERTICAL_ALIGN_MIDDLE,
+                },
+                640,
+                180
+              );
+              if (hasFeats) {
+                achievement = achievement.composite(feats, 505, 50);
               }
-            );
+              callback(null, image.composite(achievement, 775, 900));
+            });
           });
         });
       });
