@@ -9,3 +9,7 @@ Developed with React, Material-UI, Node.js, Puppeteer for WebScraping, Jimp for 
 Back-end was mostly finished, but currently not working with the changes done by Blizzard to their images (backgrounds are now .webp, which are not supported by Jimp) and lack of time to finish.
 
 The development of the frontend application was initiated but never finished.
+
+
+![image1](https://github.com/rubenavrebelo/WoW-Birthday-Card-Generator/blob/master/client/public/homescreen.jpg)
+![image2](https://github.com/rubenavrebelo/WoW-Birthday-Card-Generator/blob/master/client/public/mainscreen.jpg)
