@@ -1,5 +1,5 @@
 import * as React from "react";
-import { InputBase, Paper, Divider, Button } from "@mui/material";
+import { InputBase, Paper, Divider, Button, CircularProgress } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import Autocomplete from "@mui/lab/Autocomplete";
 import PersonIcon from "@mui/icons-material/Person";
@@ -34,6 +34,7 @@ export const RealmCharSelector: React.FC<RealmCharSelectorProps> = ({ imageCallb
   const [charName, setCharName] = React.useState<string>("");
   const [realm, setRealm] = React.useState<string | null>("");
   const [inputValue, setInputValue] = React.useState<string>("");
+  const [loading, setIsLoading] = React.useState<boolean>(false);
 
   const normalizeRealm = (wowRealm: string) => wowRealm.replace("EU - ", "").replace("US - ", "").replace(" ", "-");
 
@@ -41,16 +42,16 @@ export const RealmCharSelector: React.FC<RealmCharSelectorProps> = ({ imageCallb
     if (realm !== null) {
       localStorage.setItem("realm", realm);
       localStorage.setItem("character", charName);
-      axios
-        .get(`http://localhost:8080/${normalizeRealm(realm)}/${charName}/base`)
-        .then((response) => imageCallback(null, response.data));
+      axios.get(`http://localhost:8080/${normalizeRealm(realm)}/${charName}/base`).then((response) => {
+        imageCallback(null, response.data);
+        setIsLoading(false);
+      });
     }
   };
 
   React.useEffect(() => {
     const localRealm = localStorage.getItem("realm");
     const localCharacter = localStorage.getItem("character");
-    console.log(localRealm, localCharacter);
 
     if (localRealm !== null) {
       setRealm(localRealm);
@@ -60,8 +61,6 @@ export const RealmCharSelector: React.FC<RealmCharSelectorProps> = ({ imageCallb
       setCharName(localCharacter);
     }
   }, []);
-
-  console.log("states", charName, realm);
 
   return (
     <Paper className={classes.root}>
@@ -96,15 +95,22 @@ export const RealmCharSelector: React.FC<RealmCharSelectorProps> = ({ imageCallb
         />
       </div>
       <Divider orientation="vertical" flexItem />
-      <div style={{ width: "20%", height: "100%" }}>
-        <Button
-          disabled={charName === "" || realm === "" || realm === null}
-          onClick={() => sendRequest()}
-          fullWidth
-          style={{ height: "100%" }}
-        >
-          Go
-        </Button>
+      <div style={{ width: "20%", height: "100%", display: "flex", justifyContent: "center" }}>
+        {!loading ? (
+          <Button
+            disabled={charName === "" || realm === "" || realm === null}
+            onClick={() => {
+              sendRequest();
+              setIsLoading(true);
+            }}
+            fullWidth
+            style={{ height: "100%" }}
+          >
+            Go
+          </Button>
+        ) : (
+          <CircularProgress />
+        )}
       </div>
     </Paper>
   );

@@ -18,7 +18,7 @@ const port = 8080;
 // Task Schedule for deleting folders every 24h
 cron.schedule("0 0 * * *", () => {
   console.log("Deleting old folders....");
-  var result = findRemoveSync("/public/tmp", { age: { seconds: 86400 }, dir: "*" });
+  findRemoveSync("/public/tmp", { age: { seconds: 3600 }, dir: "*" });
 });
 
 const setBaseImage = async (image, hash) => {
@@ -40,10 +40,6 @@ const setBaseImage = async (image, hash) => {
   );
 };
 
-app.listen(port, () => {
-  console.log("Server started");
-});
-
 app.get("/:realm/:character/base", async (req, res) => {
   var hash = crypto
     .createHash("sha256")
@@ -58,7 +54,6 @@ app.get("/:realm/:character/base", async (req, res) => {
     scrapper(req.params.character, req.params.realm, setBaseImage, hash);
     const timeout = setTimeout(() => res.sendStatus(400), 15000);
     const watcher = fs.watch("public/tmp/" + hash + "/", (eventType, fileName) => {
-      console.log(eventType, fileName);
       if (eventType === "change" && fileName === hash + "-final.jpg") {
         clearTimeout(timeout);
         watcher.close();
@@ -108,3 +103,7 @@ const createImage = async (values, config, hash) => {
     });
   });
 };
+
+app.listen(port, () => {
+  console.log("Server started");
+});
